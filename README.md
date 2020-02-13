@@ -1,1 +1,0 @@
-# miro-kanban-plugin

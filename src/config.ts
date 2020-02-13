@@ -1,6 +1,6 @@
 export const APP_ID = '3074457346759443169'
 export const EDIT_WIDTH = 280
-export const icon24 = '<?xml version="1.0" encoding="UTF-8"?>\n'
+export const ICON_24 = '<?xml version="1.0" encoding="UTF-8"?>\n'
 	+ '<svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n'
 	+ '    <g id="icon-24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n'
 	+ '        <g id="icon-48" transform="translate(1.000000, 2.000000)" fill="currentColor" fill-rule="nonzero">\n'

@@ -3,6 +3,7 @@
 // init project
 var express = require('express');
 var path = require('path');
+var axios = require('axios');
 var OAuth = require('oauth').OAuth;
 var config = require('./config.json');
 
@@ -54,6 +55,11 @@ function rest(request, response) {
 		});
 }
 
+function image(request, response) {
+  response.sendFile(__dirname + '/static/help.svg');
+  response.header("Access-Control-Allow-Origin", "*");
+}
+
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
@@ -63,6 +69,8 @@ app.get("/", function(request, response) {
 });
 
 app.get('/jira/rest', rest);
+
+app.get('/jira/image', image);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {

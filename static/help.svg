@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>help</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-Copy-4" transform="translate(-296.000000, -263.000000)">
+            <g id="help" transform="translate(296.000000, 263.000000)">
+                <path d="M9.738,4.822 C11.558,4.822 12.748,5.886 12.748,7.524 C12.748,8.924 12.034,9.484 11.04,10.226 C10.368,10.73 10.13,10.94 10.13,11.85 L10.13,12.354 L8.926,12.354 L8.926,11.85 C8.926,10.618 9.332,10.17 10.27,9.47 C11.04,8.896 11.544,8.476 11.544,7.524 C11.544,6.67 10.914,5.858 9.752,5.858 C8.604,5.858 7.918,6.404 7.848,7.72 L6.644,7.72 C6.714,5.928 7.876,4.822 9.738,4.822 Z M10.256,15 L8.8,15 L8.8,13.376 L10.256,13.376 L10.256,15 Z" id="?" fill="#050038" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#050038" cx="10" cy="10" r="9.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

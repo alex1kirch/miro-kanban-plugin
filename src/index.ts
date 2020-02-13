@@ -1,5 +1,5 @@
-import {icon24} from 'config'
-import axios from 'axios'
+import {ICON_24} from 'config'
+import {createFromUrl} from 'kanban'
 
 miro.onReady(async () => {
   let extensionPoints = {};
@@ -12,7 +12,7 @@ miro.onReady(async () => {
     extensionPoints = {
       bottomBar: {
         title: "Miro kanban plugin",
-        svgIcon: icon24,
+        svgIcon: ICON_24,
         onClick: () => {
 					// miro.board.ui.openBottomPanel('bottom-panel.html', {width: EDIT_WIDTH})
         }
@@ -25,19 +25,23 @@ miro.onReady(async () => {
   miro.initialize({
     extensionPoints: extensionPoints
   });
+  
+  // miro.addListener('WIDGETS_TRANSFORMATION_UPDATED', jiraTransformationUpdate);
+  // miro.addListener('WIDGETS_TRANSFORMATION_UPDATED', jiraTransformationUpdate);
+  miro.addListener('WIDGETS_CREATED', widgetCreated);
 });
 
-axios.get('/jira/rest', { params: {
-  query: '/rest/agile/1.0/board/1/configuration'
-} })
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });
+async function widgetCreated(event: SDK.Event) {
+  const newWidget: SDK.Widget[] = event.data[0]
+  if (newWidget && newWidget.type === "PREVIEW") {
+      const widgetForCheckUrl = (await miro.board.widgets.get({ id: newWidget.id }))[0]
+      if (widgetForCheckUrl && widgetForCheckUrl.url && checkJiraBoardUrl(widgetForCheckUrl.url)){
+        await miro.board.widgets.deleteById(widgetForCheckUrl.id)
+        createFromUrl(widgetForCheckUrl.url)
+      }
+  }
+}
+
+function checkJiraBoardUrl(url: string) {
+  return url.startsWith("https://miro-platform-plugin-tasks.atlassian.net/secure/RapidBoard.jspa?rapidView=1") 
+}

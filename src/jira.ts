@@ -9,6 +9,10 @@ export function getBoardDescrUrl(rapidViewId: string) {
   return `/rest/agile/latest/board/${rapidViewId}/issue?maxResults=1000&fields=description`
 }
 
+export function getTransitionsUrl(issueId: string) {
+  return `/rest/api/2/issue/${issueId}/transitions`
+}
+
 export function checkJiraBoardUrl(url: string) {
   const uri = new URL(url)
   const rapidViewId = uri.searchParams.get('rapidView')

@@ -10,15 +10,7 @@ miro.onReady(async () => {
   const canEditBoard = permissions.includes("EDIT_CONTENT");
   
   if (canEditBoard && isAuthorized) {
-    // extensionPoints = {
-    //   bottomBar: {
-    //     title: "Miro kanban plugin",
-    //     svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-    //     onClick: () => {
-    // // miro.board.ui.openBottomPanel('bottom-panel.html', {width: EDIT_WIDTH})
-    //     }
-    //   }
-    // };
+    // TODO
   } else {
     //kill plugin
   }
@@ -27,7 +19,6 @@ miro.onReady(async () => {
     extensionPoints: extensionPoints
   });
   
-  // miro.addListener('WIDGETS_TRANSFORMATION_UPDATED', jiraTransformationUpdate)
   miro.addListener('WIDGETS_CREATED', widgetCreated);
 });
 

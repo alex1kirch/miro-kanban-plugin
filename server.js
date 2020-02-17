@@ -10,8 +10,7 @@ var request = require('request');
 
 var app = express();
 
-var jiraPort = (config.jiraHost.port === "80" ? "" : (":" + config.jiraHost.port));
-var basePath = new URL(config.jiraHost.protocol + "://" + config.jiraHost.host + jiraPort)
+var basePath = new URL(config.jiraHost.protocol + "://" + config.jiraHost.host + ":" + config.jiraHost.port)
 	.toString()
 	.replace(/\/+$/, '');
 
@@ -20,6 +19,7 @@ var consumer =
 		basePath + config.paths['request-token'],
 		basePath + config.paths['access-token'],
 		config.oauth.consumer_key,
+    // TODO: check ascii really needed?
 		config.oauth.consumer_secret.toString("ascii"),
 		"1.0",
 		"https://miro-kanban-plugin.glitch.me/jira/callback",
@@ -48,7 +48,6 @@ function rest(request, response) {
 			if (error) {
 				console.log(error);
 				response.status(400).send("Error getting data");
-				// next(new Error('Error getting data'))
 			} else {
 				var jsonData = parseJsonData(data);
 				response.json(jsonData);
@@ -57,15 +56,12 @@ function rest(request, response) {
 }
 
 function image(_request, response) {
-  // response.sendFile(__dirname + '/static/help.svg');
   request.get(_request.query.url).pipe(response);
   response.header("Access-Control-Allow-Origin", "*");
 }
 
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function(request, response) {
   response.sendFile(__dirname + '/static/index.html');
 });
@@ -74,7 +70,6 @@ app.get('/jira/rest', rest);
 
 app.get('/jira/image', image);
 
-// listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });

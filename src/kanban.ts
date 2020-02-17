@@ -39,8 +39,6 @@ export async function createFromUrl(url: string) {
     })
   }
   
-  // console.log(response);
-  
   response[1].data.issues.forEach(i => {
     const si = jiraData.issuesData.issues.find(ii => String(ii.id) == i.id)
     if (si) {
@@ -115,28 +113,8 @@ export async function createFromUrl(url: string) {
   ])
      
   const boardInfo = await miro.board.info.get()
-  // axios.post('https://d35c5cec.ngrok.io/api/v1/start', {
-  //   "boardId": boardInfo.id,
-  //   "boardInfo": boardInfo,
-  //   "type": "KANBAN",
-  //   "title": jiraData.boardName,
-  //   "columns": kanbanColumns,
-  //   "swimlanes": swimlines,
-  //   "metadata": {
-  //     [APP_ID]: {
-  //       statusIdToKanbanColumnIdMap: transitionIdToKanbanColumnIdMap
-  //     }
-  //   },
-  //   "items": items.map(w => (
-  //     {
-  //       "swimlaneId": getSwimlineIdByIssue(widgetJiraMap[w.id]),
-  //       ...statusIdToKanbanColumnIdMap[w.metadata[APP_ID].issueStatusId],
-  //       "widgetId": w.id,
-  //       ...w.metadata[APP_ID]
-  //     }))
-  //})
   
-  axios.post('https://karabanov.ngrok.io/api/v1/start', {
+  axios.post('https://45647fgdh.ngrok.io/api/v1/start', {
     "boardId": boardInfo.id,
     "boardInfo": boardInfo,
     "type": "KANBAN",

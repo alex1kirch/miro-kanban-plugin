@@ -24,18 +24,20 @@ export async function createFromUrl(url: string) {
   const colors = ["#000000", "#2a79ff", "#7cc576"]
 
   const jiraData = response[0].data
-  
-  // HACK: we have to do it on the server
-  const transitionsData = await axios.get('/jira/rest', {
-    params: {
-      query: getTransitionsUrl(jiraData.issuesData.issues[0].id)
-    } 
-  })
-  
   const statusIdTotransitionIdMap = {}
-  transitionsData.data.transitions.forEach(tr => {
-    statusIdTotransitionIdMap[tr.to.id] = tr.id
-  })
+  
+  if (jiraData.issuesData.issues.length) {
+    // HACK: we have to do it on the server
+    const transitionsData = await axios.get('/jira/rest', {
+      params: {
+        query: getTransitionsUrl(jiraData.issuesData.issues[0].id)
+      } 
+    })
+
+    transitionsData.data.transitions.forEach(tr => {
+      statusIdTotransitionIdMap[tr.to.id] = tr.id
+    })
+  }
   
   // console.log(response);
   
@@ -46,6 +48,7 @@ export async function createFromUrl(url: string) {
     }
   })
   const statusIdToKanbanColumnIdMap = {}
+  const transitionIdToKanbanColumnIdMap = {}
   const kanbanColumns = []
   
   jiraData.columnsData.columns.forEach((c, i) => {
@@ -58,14 +61,15 @@ export async function createFromUrl(url: string) {
     
     kanbanColumns.push(column)
     c.statusIds.forEach(statusId => {
-      // statusIdToKanbanColumnIdMap[statusId] = {
-      //   columnId: column.id,
-      //   subColumnId: column.subColumnId
-      // }
-      
-      statusIdToKanbanColumnIdMap[statusIdTotransitionIdMap[statusId]] = {
+      statusIdToKanbanColumnIdMap[statusId] = {
         columnId: column.id,
         subColumnId: column.subColumnId
+      }
+      
+      transitionIdToKanbanColumnIdMap[statusId] = {
+        columnId: column.id,
+        subColumnId: column.subColumnId,
+        transitionId: statusIdTotransitionIdMap[statusId]
       }
     })
   })
@@ -88,7 +92,7 @@ export async function createFromUrl(url: string) {
     "clientVisible": false,
     "metadata": {
       [APP_ID]: {
-        statusIdToKanbanColumnIdMap,
+        statusIdToKanbanColumnIdMap: transitionIdToKanbanColumnIdMap
       }
     },
     "items": items.map(w => (
@@ -111,7 +115,28 @@ export async function createFromUrl(url: string) {
   ])
      
   const boardInfo = await miro.board.info.get()
-  axios.post('https://d35c5cec.ngrok.io/api/v1/start', {
+  // axios.post('https://d35c5cec.ngrok.io/api/v1/start', {
+  //   "boardId": boardInfo.id,
+  //   "boardInfo": boardInfo,
+  //   "type": "KANBAN",
+  //   "title": jiraData.boardName,
+  //   "columns": kanbanColumns,
+  //   "swimlanes": swimlines,
+  //   "metadata": {
+  //     [APP_ID]: {
+  //       statusIdToKanbanColumnIdMap: transitionIdToKanbanColumnIdMap
+  //     }
+  //   },
+  //   "items": items.map(w => (
+  //     {
+  //       "swimlaneId": getSwimlineIdByIssue(widgetJiraMap[w.id]),
+  //       ...statusIdToKanbanColumnIdMap[w.metadata[APP_ID].issueStatusId],
+  //       "widgetId": w.id,
+  //       ...w.metadata[APP_ID]
+  //     }))
+  //})
+  
+  axios.post('https://karabanov.ngrok.io/api/v1/start', {
     "boardId": boardInfo.id,
     "boardInfo": boardInfo,
     "type": "KANBAN",
@@ -120,7 +145,7 @@ export async function createFromUrl(url: string) {
     "swimlanes": swimlines,
     "metadata": {
       [APP_ID]: {
-        statusIdToKanbanColumnIdMap,
+        statusIdToKanbanColumnIdMap: transitionIdToKanbanColumnIdMap
       }
     },
     "items": items.map(w => (
@@ -131,24 +156,5 @@ export async function createFromUrl(url: string) {
         ...w.metadata[APP_ID]
       }))
   })
-  
-  // axios.post('https://karabanov.ngrok.io/api/v1/start', {
-  //   "type": "KANBAN",
-  //   "title": jiraData.boardName,
-  //   "columns": kanbanColumns,
-  //   "swimlanes": swimlines,
-  //   "metadata": {
-  //     [APP_ID]: {
-  //       statusIdToKanbanColumnIdMap,
-  //     }
-  //   },
-  //   "items": items.map(w => (
-  //     {
-        // "swimlaneId": getSwimlineIdByIssue(widgetJiraMap[w.id]),
-  //       ...statusIdToKanbanColumnIdMap[w.metadata[APP_ID].issueStatusId],
-  //       "widgetId": w.id,
-  //       ...w.metadata[APP_ID]
-  //     }))
-  // })
 }
 

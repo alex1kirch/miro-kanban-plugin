@@ -6,6 +6,7 @@ var path = require('path');
 var axios = require('axios');
 var OAuth = require('oauth').OAuth;
 var config = require('./config.json');
+var request = require('request');
 
 var app = express();
 
@@ -55,8 +56,9 @@ function rest(request, response) {
 		});
 }
 
-function image(request, response) {
-  response.sendFile(__dirname + '/static/help.svg');
+function image(_request, response) {
+  // response.sendFile(__dirname + '/static/help.svg');
+  request.get(_request.query.url).pipe(response);
   response.header("Access-Control-Allow-Origin", "*");
 }
 

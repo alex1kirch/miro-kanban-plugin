@@ -5,7 +5,6 @@ module.exports = {
   context: path.join(__dirname, './'),
 	entry: {
 		index: './src/index.ts',
-		// 'bottom-panel': './src/bottom-panel.tsx'
 	},
   output: {
 		filename: '[name].js',

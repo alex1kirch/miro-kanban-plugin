@@ -30,7 +30,7 @@ export function getSwimlinesData(jiraData) {
             
       jiraData.issuesData.issues.forEach(v => {
         const assigneeName = v.assigneeName || 'Unassigned'
-        assignees[assigneeName] = 'swimline.id'
+        assignees[assigneeName] = swimline.id
       })
       
       const uniqAssignees = Object.keys(assignees)
